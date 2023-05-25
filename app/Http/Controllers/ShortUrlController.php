@@ -19,9 +19,14 @@ class ShortUrlController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        return Inertia::render("Index");
+        $data = $request->validate(["short" => "string"]);
+
+        return Inertia::render(
+            "Index",
+            $data
+        );
     }
 
     /**
@@ -35,7 +40,7 @@ class ShortUrlController extends Controller
         $shortUrl = ShortUrl::create($data);
         $short = $this->base62Encode($shortUrl->id);
         $shortUrl->update(["short" => $short]);
-        return redirect("shortner.view", [""])
+        return response()->json(['short' => route('shortner.show', ['short' =>  $short])]);
     }
 
     public function base62Encode($num, $b = 62)
@@ -66,9 +71,13 @@ class ShortUrlController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $short)
     {
-        //
+        $shortUrl = ShortUrl::where("short", $short)->first();
+        if (!$shortUrl) {
+            return redirect()->to(route("home"));
+        }
+        return redirect()->to($shortUrl->full);
     }
 
     /**

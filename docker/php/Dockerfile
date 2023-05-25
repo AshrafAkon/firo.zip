@@ -35,6 +35,7 @@ WORKDIR /var/www/html
 
 # copy project files
 COPY --chown=www-data:www-data --from=phpbuilder /app /var/www/html
+COPY --chown=www-data:www-data --from=nodebuilder /app/public/build /var/www/html/public/build
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 CMD [ "cgi-fcgi -bind -connect localhost:9000" ]
 CMD ["php-fpm"]

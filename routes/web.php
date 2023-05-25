@@ -24,13 +24,15 @@ use Inertia\Inertia;
 //         'phpVersion' => PHP_VERSION,
 //     ]);
 // });
-Route::get("/", [ShortUrlController::class, "create"]);
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
-});
+Route::get("/", [ShortUrlController::class, "create"])->name("home");
+Route::post("/shorten", [ShortUrlController::class, "store"])->name("shortner.store");
+Route::get("/{short}", [ShortUrlController::class, "show"])->name("shortner.show");
+// Route::middleware([
+//     'auth:sanctum',
+//     config('jetstream.auth_session'),
+//     'verified',
+// ])->group(function () {
+//     Route::get('/dashboard', function () {
+//         return Inertia::render('Dashboard');
+//     })->name('dashboard');
+// });
