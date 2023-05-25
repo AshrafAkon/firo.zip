@@ -4,7 +4,8 @@ services:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
-    image: firo.zip-php
+    image: ghcr.io/ashrafakon/php/firo.zip:latest
+    pull_policy: if-not-present
     healthcheck:
       test: [ "CMD-SHELL", "cgi-fcgi -bind -connect localhost:9000" ]
       interval: 10s
